@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #e5e5e5;
 }
 ol, ul {
 	list-style: none;
@@ -89,13 +90,20 @@ nav ul {
 	align-items: center;
 	list-style-type: none;
 
+	
+
+
 }
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
 }
 
-li:hover {
+nav a {
+	text-decoration: none;
+	color: black;
+}
+li:hover a, li:hover{
 	color: #B1663C;
 }
 #introduction {
@@ -160,6 +168,7 @@ margin: auto;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	
 }
 #contact label {
 	margin: 2em 0 1em 0;
@@ -178,6 +187,7 @@ input[type="submit"]{
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
 }
 
 footer nav ul {
@@ -186,3 +196,33 @@ footer nav ul {
 	margin: 2em
 }
 
+.categorie {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-top: 10px;
+	padding-bottom: 50px;	
+
+}
+.categorie_button {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: #1D6154;
+	background-color: white;
+	margin : 2em auto ;
+	text-align: center;
+	border-radius: 60px ;
+	cursor: pointer;
+	height:37px;
+	min-width: 100px;
+	
+	padding-left: 23px;
+	padding-right: 23px;
+	margin: 10px;
+}
+
+.categorie_button:hover {
+	color: white;
+	background-color: #1D6154;
+
+}
