@@ -221,7 +221,7 @@ footer nav ul {
 	margin: 10px;
 }
 
-.categorie_button:hover {
+.button_active {
 	color: white;
 	background-color: #1D6154;
 
