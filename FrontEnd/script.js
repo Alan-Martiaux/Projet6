@@ -7,6 +7,8 @@ let LogOut = document.querySelector(".logOut");
 let edit_button = document.querySelector(".edit_button");
 let modal = document.querySelector(".modal");
 let close_Modal = document.querySelector(".close_Modal");
+let divCategory = document.querySelector(".categorie");
+let Modifier = document.querySelector(".modifier");
 
 async function getData(url) {
   try {
@@ -70,7 +72,7 @@ function genererCategorie(categories, works) {
       ///RETIRE BACKGROUND VERT
       let buttonActive = document.querySelector(".button_active");
       buttonActive.classList.remove("button_active");
-
+      /////////////////////////
       let filterWorks = works;
       if (categorie.name !== "Tous") {
         filterWorks = works.filter(
@@ -85,23 +87,22 @@ function genererCategorie(categories, works) {
       categorieContainer.classList.add("button_active");
     }
   }
-
-  //Voir si possible raccourcir !!!
-  // let allFilters = document.getElementById("Tous");
-  // let objFilters = document.getElementById("Objets");
-  // let appartFilters = document.getElementById("Appartements");
-  // let restoFilters = document.getElementById("Hotels & restaurants");
-
-  //////////////////////
 }
+
+////////////////
+//MODE EDITION//
+////////////////
 
 function genereredit() {
   let token = localStorage.getItem("UserToken");
   console.log(token);
   editorMode.style.display = "none";
+  modal.style.display = "none";
   if (token) {
     LogIn.style.display = "none";
     editorMode.style.display = "flex";
+    divCategory.style.display = "none";
+    Modifier.style.display = "flex";
     console.log("Mode editeur");
   } else LogOut.style.display = "none";
 }
@@ -112,15 +113,21 @@ LogOut.addEventListener("click", function disconect() {
   LogIn.style.display = "block";
   LogOut.style.display = "none";
   editorMode.style.display = "none";
+  divCategory.style.display = "flex";
+  Modifier.style.display = "none";
   localStorage.clear();
 });
 
-//MODALE
+//////////
+//MODALE//
+//////////
 
+//Ouverture de la Modal
 edit_button.addEventListener("click", function openModal() {
   modal.style.display = "flex";
 });
 
+// Fermeture de la Modal
 close_Modal.addEventListener("click", function closeModal() {
   modal.style.display = "none";
 });

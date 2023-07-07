@@ -284,7 +284,7 @@ footer nav ul {
   display: flex;
   align-items: center;
   justify-content: center;
-	
+	background-color: rgba(0, 0, 0, 0.5);
 	
 
  
@@ -317,3 +317,11 @@ footer nav ul {
 	cursor: pointer;
 	padding: 20px;
 }
+
+.modifier{
+	display: flex;
+	padding-top: 10px;
+	margin-left: 57px;
+	gap: 5px;
+}
+
