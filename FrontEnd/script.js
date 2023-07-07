@@ -1,4 +1,5 @@
 const worksGallery = document.querySelector(".gallery");
+const modalGallery = document.querySelector(".galleryModal");
 
 let editorMode = document.querySelector(".edit_mode");
 let LogIn = document.querySelector(".logIn");
