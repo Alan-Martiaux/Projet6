@@ -1,5 +1,13 @@
 const worksGallery = document.querySelector(".gallery");
 
+let editorMode = document.querySelector(".edit_mode");
+let LogIn = document.querySelector(".logIn");
+let LogOut = document.querySelector(".logOut");
+
+let edit_button = document.querySelector(".edit_button");
+let modal = document.querySelector(".modal");
+let close_Modal = document.querySelector(".close_Modal");
+
 async function getData(url) {
   try {
     const reponse = await fetch(url);
@@ -11,13 +19,16 @@ async function getData(url) {
 }
 
 async function init() {
+  genereredit();
   const works = await getData("http://localhost:5678/api/works");
   const categorieTous = { id: 0, name: "Tous" };
   const categories = await getData("http://localhost:5678/api/categories");
   categories.unshift(categorieTous);
   console.log(categories);
+
   genererCategorie(categories, works);
   genererWorks(works);
+  modal.style.display = "none";
 }
 
 init();
@@ -56,12 +67,10 @@ function genererCategorie(categories, works) {
     categorieContainer.appendChild(categorieTitle);
 
     categorieContainer.addEventListener("click", (e) => {
-      //Voir si possible  raccourcir !!!
-      allFilters.classList.remove("button_active");
-      objFilters.classList.remove("button_active");
-      appartFilters.classList.remove("button_active");
-      restoFilters.classList.remove("button_active");
-      //////////////////////
+      ///RETIRE BACKGROUND VERT
+      let buttonActive = document.querySelector(".button_active");
+      buttonActive.classList.remove("button_active");
+
       let filterWorks = works;
       if (categorie.name !== "Tous") {
         filterWorks = works.filter(
@@ -71,14 +80,47 @@ function genererCategorie(categories, works) {
       categorieContainer.classList.add("button_active");
       genererWorks(filterWorks);
     });
+
+    if (categorie.name === "Tous") {
+      categorieContainer.classList.add("button_active");
+    }
   }
 
   //Voir si possible raccourcir !!!
+  // let allFilters = document.getElementById("Tous");
+  // let objFilters = document.getElementById("Objets");
+  // let appartFilters = document.getElementById("Appartements");
+  // let restoFilters = document.getElementById("Hotels & restaurants");
 
-  let allFilters = document.getElementById("Tous");
-  let objFilters = document.getElementById("Objets");
-  let appartFilters = document.getElementById("Appartements");
-  let restoFilters = document.getElementById("Hotels & restaurants");
-  allFilters.classList.add("button_active");
   //////////////////////
 }
+
+function genereredit() {
+  let token = localStorage.getItem("UserToken");
+  console.log(token);
+  editorMode.style.display = "none";
+  if (token) {
+    LogIn.style.display = "none";
+    editorMode.style.display = "flex";
+    console.log("Mode editeur");
+  } else LogOut.style.display = "none";
+}
+
+//Suppression des token et deco
+LogOut.addEventListener("click", function disconect() {
+  console.log("coucou");
+  LogIn.style.display = "block";
+  LogOut.style.display = "none";
+  editorMode.style.display = "none";
+  localStorage.clear();
+});
+
+//MODALE
+
+edit_button.addEventListener("click", function openModal() {
+  modal.style.display = "flex";
+});
+
+close_Modal.addEventListener("click", function closeModal() {
+  modal.style.display = "none";
+});

@@ -11,20 +11,38 @@
 	<link rel="stylesheet" href="./assets/style.css">
 	<script type="module" src="script.js"></script>
 
+	 <!-- Ajout icone -->
+	 <script
+	 src="https://kit.fontawesome.com/995e29eb84.js"
+	 crossorigin="anonymous"
+   ></script>
 </head>
 <body>
+	<div class="edit_mode">
+		<button class="edit_button"><i class="fa-sharp fa-regular fa-pen-to-square"></i> Mode édition</button>
+		<button class=" change_button">publier les changements</button>
+	</div>
+	<div class="modal">
+		<div class="modal_card">
+			<button class="close_Modal">X</button>
+		</div>
+	</div>
 <header>
+	
+	
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
 			<li><a href="/FrontEnd/index.html">projets</a></li>
 			<li>contact</li>
-			<li><a href="/FrontEnd/login.html">login</a></li>
+			<li class="logIn"><a href="/FrontEnd/login.html">login</a></li>
+			<button class="logOut">log out</button>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
 <main>
+	
 	<section id="introduction">
 		<figure>
 			<img src="./assets/images/sophie-bluel.png" alt="">
