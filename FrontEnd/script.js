@@ -11,6 +11,10 @@ let close_Modal = document.querySelector(".close_Modal");
 let divCategory = document.querySelector(".categorie");
 let Modifier = document.querySelector(".modifier");
 
+let add_picture = document.querySelector(".add_button");
+let modal_edit = document.querySelector(".modal_contents");
+let modal_add = document.querySelector(".modal_add");
+
 async function getData(url) {
   try {
     const reponse = await fetch(url);
@@ -28,9 +32,9 @@ async function init() {
   const categories = await getData("http://localhost:5678/api/categories");
   categories.unshift(categorieTous);
   console.log(categories);
-
   genererCategorie(categories, works);
   genererWorks(works);
+  generermodalWorks(works);
   modal.style.display = "none";
 }
 
@@ -123,12 +127,39 @@ LogOut.addEventListener("click", function disconect() {
 //MODALE//
 //////////
 
+//generation contenu modale
+function generermodalWorks(works) {
+  for (const modalWork of works) {
+    const modalContainer = document.createElement("figure");
+    modalContainer.setAttribute("class", modalWork.category.name);
+    const modalImg = document.createElement("img");
+    modalImg.src = modalWork.imageUrl;
+    const modalImgTitle = document.createElement("figcaption");
+    modalImgTitle.innerText = "éditer";
+    const trashImg = document.createElement("i");
+    trashImg.innerText = "";
+    trashImg.setAttribute("class", "fa-regular fa-trash-can modal_trash-icon");
+
+    modalGallery.appendChild(modalContainer);
+    modalContainer.appendChild(modalImg);
+    modalContainer.appendChild(modalImgTitle);
+    modalContainer.appendChild(trashImg);
+  }
+}
+
 //Ouverture de la Modal
 edit_button.addEventListener("click", function openModal() {
   modal.style.display = "flex";
+  modal_add.style.display = "none";
 });
 
 // Fermeture de la Modal
 close_Modal.addEventListener("click", function closeModal() {
   modal.style.display = "none";
+});
+
+//Ajout de photo
+add_picture.addEventListener("click", function addPicture() {
+  modal_edit.style.display = "none";
+  modal_add.style.display = "flex";
 });
