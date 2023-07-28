@@ -5,15 +5,33 @@ let editorMode = document.querySelector(".edit_mode");
 let LogIn = document.querySelector(".logIn");
 let LogOut = document.querySelector(".logOut");
 
+// Debut let pour modal
+let token = localStorage.getItem("UserToken");
+console.log(token);
+
 let edit_button = document.querySelector(".edit_button");
 let modal = document.querySelector(".modal");
-let close_Modal = document.querySelector(".close_Modal");
+let close_Modal = document.querySelectorAll(".close_Modal");
 let divCategory = document.querySelector(".categorie");
 let Modifier = document.querySelector(".modifier");
 
 let add_picture = document.querySelector(".add_button");
 let modal_edit = document.querySelector(".modal_contents");
 let modal_add = document.querySelector(".modal_add");
+
+let return_back = document.querySelector(".return_back");
+
+// Let pour ajout de la photo sur swagger
+let sendPhoto = document.querySelector(".valid_button");
+
+let afficheImg = document.querySelector(".choice_img");
+
+let imgChange = document.getElementById("img_change");
+
+let information = document.querySelector(".information");
+
+let addForm = document.querySelector(".add_form");
+/////////////////////////
 
 async function getData(url) {
   try {
@@ -26,7 +44,8 @@ async function getData(url) {
 }
 
 async function init() {
-  genereredit();
+  console.log("Initialisation terminé");
+  //genereredit();
   const works = await getData("http://localhost:5678/api/works");
   const categorieTous = { id: 0, name: "Tous" };
   const categories = await getData("http://localhost:5678/api/categories");
@@ -35,7 +54,8 @@ async function init() {
   genererCategorie(categories, works);
   genererWorks(works);
   generermodalWorks(works);
-  modal.style.display = "none";
+  information.style.display = "none";
+  //modal.style.display = "none";
 }
 
 init();
@@ -60,7 +80,7 @@ function genererWorks(works) {
 
 function genererCategorie(categories, works) {
   const categorieGallery = document.querySelector(".categorie");
-
+  document.querySelector(".categorie").innerText = "";
   for (const categorie of categories) {
     const categorieContainer = document.createElement("button");
     categorieContainer.classList.add("categorie_button");
@@ -98,9 +118,7 @@ function genererCategorie(categories, works) {
 //MODE EDITION//
 ////////////////
 
-function genereredit() {
-  let token = localStorage.getItem("UserToken");
-  console.log(token);
+function genererEdit() {
   editorMode.style.display = "none";
   modal.style.display = "none";
   if (token) {
@@ -109,8 +127,11 @@ function genereredit() {
     divCategory.style.display = "none";
     Modifier.style.display = "flex";
     console.log("Mode editeur");
-  } else LogOut.style.display = "none";
+  } else {
+    LogOut.style.display = "none";
+  }
 }
+genererEdit();
 
 //Suppression des token et deco
 LogOut.addEventListener("click", function disconect() {
@@ -129,37 +150,160 @@ LogOut.addEventListener("click", function disconect() {
 
 //generation contenu modale
 function generermodalWorks(works) {
+  document.querySelector(".galleryModal").innerText = "";
   for (const modalWork of works) {
     const modalContainer = document.createElement("figure");
     modalContainer.setAttribute("class", modalWork.category.name);
+
     const modalImg = document.createElement("img");
     modalImg.src = modalWork.imageUrl;
     const modalImgTitle = document.createElement("figcaption");
     modalImgTitle.innerText = "éditer";
-    const trashImg = document.createElement("i");
-    trashImg.innerText = "";
-    trashImg.setAttribute("class", "fa-regular fa-trash-can modal_trash-icon");
+    const trashdelete = document.createElement("button");
+    trashdelete.setAttribute("class", "poubelle");
+    trashdelete.innerHTML =
+      '<i class="fa-regular fa-trash-can modal_trash-icon "></i>';
 
+    //suppworks
+    trashdelete.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(modalImg.id);
+      console.log("ok");
+      console.log(modalWork.id);
+      let request = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      fetch("http://localhost:5678/api/works/" + modalWork.id, request)
+        .then((response) => {
+          if (response.ok) {
+            console.log("Ook");
+            init();
+          } else {
+            console.log("Pas Ook");
+          }
+        })
+        .catch((error) => {
+          console.error("Fail", error);
+          console.error(data);
+        });
+    });
+
+    //Fetch => INTI()
+
+    ///////////
     modalGallery.appendChild(modalContainer);
     modalContainer.appendChild(modalImg);
     modalContainer.appendChild(modalImgTitle);
-    modalContainer.appendChild(trashImg);
+    modalContainer.appendChild(trashdelete);
   }
 }
 
 //Ouverture de la Modal
 edit_button.addEventListener("click", function openModal() {
   modal.style.display = "flex";
+  modal_edit.style.display = "flex";
   modal_add.style.display = "none";
+  console.log(token);
+  edit_button = true;
 });
 
 // Fermeture de la Modal
-close_Modal.addEventListener("click", function closeModal() {
-  modal.style.display = "none";
+close_Modal.forEach(function (close) {
+  close.addEventListener("click", function closeModal() {
+    modal.style.display = "none";
+    console.log("close");
+    edit_button = false;
+  });
 });
 
-//Ajout de photo
+//retour en arriere
+
+return_back.addEventListener("click", function returnBack() {
+  modal_edit.style.display = "flex";
+  modal_add.style.display = "none";
+  information.style.display = "none";
+});
+
+//Ajout de photo     // Ajouter message d'eereur etc...
+
 add_picture.addEventListener("click", function addPicture() {
   modal_edit.style.display = "none";
   modal_add.style.display = "flex";
 });
+
+sendPhoto.addEventListener("click", (e) => {
+  console.log("test");
+  e.preventDefault();
+  const fileAdd = imgChange.files[0];
+  const title = document.querySelector(".input_titre").value;
+  const categoryId = document.querySelector(".input_categorie").value;
+  const formData = new FormData();
+  formData.append("image", fileAdd);
+  formData.append("title", title);
+  formData.append("category", categoryId);
+  let request = {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  };
+  fetch("http://localhost:5678/api/works", request).then((response) => {
+    if (response.ok) {
+      console.log("Ook");
+
+      modal.style.display = "none";
+      addForm.reset();
+      init();
+    } else {
+      console.log("Pas Ook");
+      if (500) {
+        information.style.display = "flex";
+      }
+    }
+  });
+  init();
+});
+
+afficheImg.addEventListener("change", function previewImage() {
+  const file = imgChange.files[0];
+  const changeImgCont = document.getElementById("change_Img_cont");
+
+  if (file.type.match("image.*")) {
+    const reader = new FileReader();
+
+    reader.addEventListener("load", function (event) {
+      const imageUrl = event.target.result;
+      const image = new Image();
+
+      image.addEventListener("load", function () {
+        changeImgCont.innerHTML = ""; // Vider le conteneur au cas où il y aurait déjà des images.
+        changeImgCont.appendChild(image);
+      });
+
+      image.src = imageUrl;
+      image.style.width = "200px"; // Indiquez les dimensions souhaitées ici.
+      image.style.height = "auto"; // Vous pouvez également utiliser "px" si vous voulez spécifier une hauteur.
+    });
+
+    reader.readAsDataURL(file);
+  }
+});
+
+//delete photo
+
+// const delete_img = document.querySelectorAll(".poiubelle");
+
+// delete_img.forEach(function (element) {
+//   element.addEventListener("click", function () {
+//     console.log("Effacer");
+//   });
+// });
+
+function eventDelete() {
+  const delete_img = document.querySelectorAll(".poiubelle");
+  console.log(delete_img);
+}

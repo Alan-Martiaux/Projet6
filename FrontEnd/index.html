@@ -21,13 +21,17 @@
     ></script>
   </head>
   <body>
+    <!--modal de base-->
+
     <aside class="modal">
       <div class="modal_card">
         <div class="modal_contents">
-        <div class="close_Modal">
-          <button><i class="fa-solid fa-xmark"></i></button>
-        </div>
-       
+          <div class="modal_icon">
+            <div class="close_Modal">
+              <button><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          </div>
+
           <div><h3>Galerie Photo</h3></div>
           <div class="galleryModal"></div>
           <div class="modal_line"></div>
@@ -36,20 +40,88 @@
           <p class="delete_all">Supprimer la galerie</p>
         </div>
       </div>
+      <!--           -->
+
       <!--modal ajout-->
       <div class="modal_add">
-        <div class="modal_icon"><div class="back">
-          <i class="fa-solid fa-arrow-left"></i>
+        <div class="modal_icon">
+          <div class="back">
+            <i class="fa-solid fa-arrow-left return_back"></i>
+          </div>
+          <div class="close_Modal">
+            <button><i class="fa-solid fa-xmark"></i></button>
+          </div>
         </div>
-        <div class="close_Modal">
-          <button><i class="fa-solid fa-xmark"></i></button>
-        </div></div>
-        
+
         <div><h3>Ajout photo</h3></div>
-        <div class="modal_line"></div>
+        <form
+          enctype="multipart/form-data"
+          method="post"
+          name="fileinfo"
+          class="add_form"
+        >
+          <div id="change_Img_cont" class="ajout_Img">
+            <i class="fa-regular fa-image fa-xl add_image_icon"></i>
+            <label class="choice_img"
+              >+ Ajouter photo
+              <input
+                hidden
+                class="add_photo"
+                id="img_change"
+                type="file"
+                name="images"
+                required
+                accept="image/jpg , image/png"
+                size="4000000"
+              />
+            </label>
+            <p>jpg, png : 4mo max</p>
+            <br />
+          </div>
+
+          <div class="titre_categorie">
+            <h5>Titre</h5>
+            <input
+              class="input_add_photo input_titre"
+              type="text"
+              name="Titre"
+              required
+            />
+            <br />
+            <h5>Catégorie</h5>
+            <select class="input_add_photo input_categorie" name="Titre">
+              <option
+                value=" "
+                class="option__category"
+                label="Sélectionner une catégorie"
+              ></option>
+              <option
+                value=" 1 "
+                class="option__category"
+                label="Objets"
+              ></option>
+              <option
+                value=" 2 "
+                class="option__category"
+                label="Appartements"
+              ></option>
+              <option
+                value=" 3 "
+                class="option__category"
+                label="Hotels & restaurants"
+              ></option>
+            </select>
+          </div>
+
+          <div class="modal_line"></div>
+        </form>
+        <p class="information">
+          <i class="fa-solid fa-circle-info"></i> Veuillez remplir tous les
+          champs !
+        </p>
         <input class="valid_button" type="submit" value="Valider" />
-        </div>
       </div>
+
       <!--           -->
     </aside>
     <div class="edit_mode">
@@ -60,13 +132,13 @@
     </div>
 
     <header>
-      <h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
       <nav>
         <ul>
           <li><a href="/FrontEnd/index.html">projets</a></li>
           <li>contact</li>
           <li class="logIn"><a href="/FrontEnd/login.html">login</a></li>
-          <button class="logOut">log out</button>
+          <li class="logOut">log out</li>
           <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
         </ul>
       </nav>

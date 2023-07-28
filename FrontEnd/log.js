@@ -6,7 +6,7 @@ const password = document.querySelector("#password");
 const connexion = document.querySelector(".login");
 
 // Récupre les infor emial et password
-
+let badLogin = document.querySelector(".bad_login");
 // Fetch avec la methode post ( JSON.stringify())
 
 connexion.addEventListener("submit", function (e) {
@@ -32,11 +32,14 @@ connexion.addEventListener("submit", function (e) {
 
       if (token) {
         console.log("WIN");
-        window.location.href = "http://127.0.0.1:5500/FrontEnd/index.html";
+        window.location.href = "index.html";
+        console.log(UserToken);
       } else {
         console.log("Non autorisé");
+        badLogin.style.display = "flex";
       }
     })
+
     .catch((error) => {
       console.error("Fail", error);
       console.error(data);
