@@ -493,9 +493,18 @@ footer nav ul {
   padding-top: 20px;
 }
 
+figure .imgWidth {
+  padding-bottom: 40px;
+  object-fit: contain;
+}
+
+.div_img_add {
+  height: 105px;
+}
 /** AJOUT d'image **/
 
-.ajout_Img {
+.ajout_Img,
+#img_Changer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -504,7 +513,7 @@ footer nav ul {
   margin-bottom: 10px;
 
   border-radius: 5px;
-
+  height: 200px;
   width: 420px;
 }
 

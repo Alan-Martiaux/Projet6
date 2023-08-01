@@ -31,6 +31,9 @@ let imgChange = document.getElementById("img_change");
 let information = document.querySelector(".information");
 
 let addForm = document.querySelector(".add_form");
+
+let changeImgCont = document.getElementById("img_Changer");
+let Imgcontainer = document.querySelector("#change_Img_cont");
 /////////////////////////
 
 async function getData(url) {
@@ -55,7 +58,9 @@ async function init() {
   genererWorks(works);
   generermodalWorks(works);
   information.style.display = "none";
-  //modal.style.display = "none";
+  changeImgCont.style.display = "none";
+  //addModal();
+  resetForm();
 }
 
 init();
@@ -153,10 +158,14 @@ function generermodalWorks(works) {
   document.querySelector(".galleryModal").innerText = "";
   for (const modalWork of works) {
     const modalContainer = document.createElement("figure");
-    modalContainer.setAttribute("class", modalWork.category.name);
-
+    modalContainer.setAttribute("id", modalWork.category.name);
+    modalContainer.setAttribute("class", "imgWidth");
+    const divImgAdd = document.createElement("div");
+    divImgAdd.setAttribute("class", "div_img_add");
+    divImgAdd.innerHTML = "";
     const modalImg = document.createElement("img");
     modalImg.src = modalWork.imageUrl;
+
     const modalImgTitle = document.createElement("figcaption");
     modalImgTitle.innerText = "éditer";
     const trashdelete = document.createElement("button");
@@ -195,7 +204,8 @@ function generermodalWorks(works) {
 
     ///////////
     modalGallery.appendChild(modalContainer);
-    modalContainer.appendChild(modalImg);
+    modalContainer.appendChild(divImgAdd);
+    divImgAdd.appendChild(modalImg);
     modalContainer.appendChild(modalImgTitle);
     modalContainer.appendChild(trashdelete);
   }
@@ -225,6 +235,7 @@ return_back.addEventListener("click", function returnBack() {
   modal_edit.style.display = "flex";
   modal_add.style.display = "none";
   information.style.display = "none";
+  resetForm();
 });
 
 //Ajout de photo     // Ajouter message d'eereur etc...
@@ -233,6 +244,24 @@ add_picture.addEventListener("click", function addPicture() {
   modal_edit.style.display = "none";
   modal_add.style.display = "flex";
 });
+
+function addModal() {
+  const changePicture = document.querySelector(".ajout_Img");
+  changePicture.innerHTML = "";
+
+  const iconPicture = document.createElement("i");
+  iconPicture.setAttribute("class", "fa-regular fa-image fa-xl add_image_icon");
+  const labelPicture = document.createElement("label");
+  labelPicture.setAttribute("class", "choice_img choice_test");
+  labelPicture.innerText = "+ Ajouter Photo";
+  const inputPicture = document.createElement("div");
+  inputPicture.innerHTML =
+    '<input hidden class="add_photo" id="img_change" type="file" name="images" required accept="image/jpg , image/png" size="4000000"/>';
+
+  changePicture.appendChild(iconPicture);
+  changePicture.appendChild(labelPicture);
+  labelPicture.appendChild(inputPicture);
+}
 
 sendPhoto.addEventListener("click", (e) => {
   console.log("test");
@@ -269,10 +298,10 @@ sendPhoto.addEventListener("click", (e) => {
 });
 
 afficheImg.addEventListener("change", function previewImage() {
+  console.log("test");
   const file = imgChange.files[0];
-  const changeImgCont = document.getElementById("change_Img_cont");
 
-  if (file.type.match("image.*")) {
+  if (file) {
     const reader = new FileReader();
 
     reader.addEventListener("load", function (event) {
@@ -280,18 +309,29 @@ afficheImg.addEventListener("change", function previewImage() {
       const image = new Image();
 
       image.addEventListener("load", function () {
-        changeImgCont.innerHTML = ""; // Vider le conteneur au cas où il y aurait déjà des images.
+        changeImgCont.innerHTML = "";
         changeImgCont.appendChild(image);
+        changeImgCont.style.display = "flex";
+        Imgcontainer.style.display = "none";
       });
 
       image.src = imageUrl;
-      image.style.width = "200px"; // Indiquez les dimensions souhaitées ici.
-      image.style.height = "auto"; // Vous pouvez également utiliser "px" si vous voulez spécifier une hauteur.
+      image.style.width = "auto";
+      image.style.height = "100%";
     });
 
     reader.readAsDataURL(file);
   }
 });
+
+function resetForm() {
+  console.log("Reset Formulaire");
+  const formReset = document.querySelector(".add_form");
+  formReset.reset();
+
+  Imgcontainer.style.display = "flex";
+  changeImgCont.style.display = "none";
+}
 
 //delete photo
 
