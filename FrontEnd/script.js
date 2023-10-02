@@ -253,6 +253,7 @@ edit_button.addEventListener("click", function openModal() {
 close_Modal.forEach(function (close) {
   close.addEventListener("click", function closeModal() {
     modal.style.display = "none";
+    information.style.display = "none";
     console.log("close");
     edit_button = false;
   });
