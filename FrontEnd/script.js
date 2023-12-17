@@ -42,6 +42,7 @@ async function getData(url) {
   try {
     const reponse = await fetch(url);
     let data = reponse.json();
+    console.log(reponse);
     return data;
   } catch (error) {
     console.log(error);
@@ -55,6 +56,7 @@ async function init() {
   const categorieTous = { id: 0, name: "Tous" };
   const categories = await getData("http://localhost:5678/api/categories");
   categories.unshift(categorieTous);
+  console.log(works);
   console.log(categories);
   genererCategorie(categories, works);
   genererWorks(works);
@@ -268,7 +270,7 @@ return_back.addEventListener("click", function returnBack() {
   resetForm();
 });
 
-//Ajout de photo     // Ajouter message d'eereur etc...
+//Ajout de photo
 
 add_picture.addEventListener("click", function addPicture() {
   modal_edit.style.display = "none";
